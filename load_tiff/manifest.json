@@ -1,0 +1,33 @@
+{
+  "description": "load image",
+  "name": "load_tiff",
+  "stage": "1",
+  "params": {
+    "omeroIds": {
+      "name": "omeroIds",
+      "description": "Omero Images",
+      "type": "omero",
+      "required": true,
+      "default": []
+    },
+    "image_path": {
+      "name": "image_path",
+      "description": "path to file what we do",
+      "type": "string",
+      "hidden": true,
+      "default": ""
+    }
+  },
+  "script_path": "load_tiff",
+  "return": [
+    {
+      "median_image": [],
+      "description": "Image opened by ASIImage, and channel array"
+    }
+  ],
+  "depends_and_script": [],
+  "libs": [
+    "aicsimageio==3.3.7",
+    "tifffile"
+  ]
+}
