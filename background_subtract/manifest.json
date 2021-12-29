@@ -11,22 +11,22 @@
       "default": []
     },
     "ch": {
-      "name": "ch",
+      "name": "channel",
       "description": "Index of background channel",
       "type": "channel",
       "required": true,
       "default": 0
     },
     "top": {
-      "name": "top",
-      "description": "ignore pixels above this threshold",
+      "name": "threshold",
+      "description": "Ignore pixels above this threshold",
       "type": "int",
       "required": true,
       "default": 0
     },
     "subtraction": {
       "name": "subtraction",
-      "description": "how many intensity units to subtract from other channels",
+      "description": "How many intensity units to subtract from other channels",
       "type": "int",
       "required": true,
       "default": 0
