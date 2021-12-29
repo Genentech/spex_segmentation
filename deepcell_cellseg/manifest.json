@@ -1,0 +1,44 @@
+{
+  "name": "deepcell_cellseg",
+  "description": "Segment image by deepcell deep learning method",
+  "stage": "3",
+  "params": {
+    "median_image": {
+      "name": "median_image",
+      "description": "Multichannel image as numpy array",
+      "type": "array",
+      "hidden": true,
+      "required": true
+    },
+    "channel_list": {
+      "name": "channel_list",
+      "description": "list of indices to use for nuclear segmentation IDS(0,2,3)",
+      "type": "channels",
+      "required": true
+    },
+    "mpp": {
+      "name": "mpp",
+      "description": "Micron per pixel",
+      "type": "float",
+      "required": true,
+      "default": 0
+    }
+  },
+  "script_path": "deepcell_cellseg",
+  "return": [
+    {
+      "labels": [],
+      "description": "Per cell segmentation as numpy array"
+    }
+  ],
+  "depends_and_script": [],
+  "depends_or_script": [
+    "median_denoise",
+    "nlm_denoise",
+    "background_subtract"
+  ],
+  "libs": [
+    "packaging",
+    "deepcell==0.11.0"
+  ]
+}
