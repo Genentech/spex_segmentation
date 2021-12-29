@@ -1,0 +1,50 @@
+{
+  "name": "background_subtract",
+  "description": "Subtract background signal from other channels",
+  "stage": "2",
+  "params": {
+    "median_image": {
+      "name": "median_image",
+      "description": "Multichannel numpy array (C,X,Y)",
+      "type": "array",
+      "hidden": true,
+      "default": []
+    },
+    "ch": {
+      "name": "ch",
+      "description": "Index of background channel",
+      "type": "channel",
+      "required": true,
+      "default": 0
+    },
+    "top": {
+      "name": "top",
+      "description": "ignore pixels above this threshold",
+      "type": "int",
+      "required": true,
+      "default": 0
+    },
+    "subtraction": {
+      "name": "subtraction",
+      "description": "how many intensity units to subtract from other channels",
+      "type": "int",
+      "required": true,
+      "default": 0
+    }
+  },
+  "script_path": "background_subtract",
+  "return": [
+    {
+      "median_image": [],
+      "description": "Background corrected Image Stack"
+    }
+  ],
+  "depends_and_script": [
+    "load_tiff"
+  ],
+  "libs": [
+    "scikit-image==0.18.1",
+    "numpy",
+    "dask==2021.11.1"
+  ]
+}
