@@ -1,0 +1,38 @@
+{
+  "name": "classicwastershed_cellseg",
+  "description": "Detect nuclei in image using classic watershed",
+  "stage": "3",
+  "params": {
+    "median_image": {
+      "name": "median_image",
+      "description": "Multichannel image as numpy array",
+      "type": "array",
+      "hidden": true,
+      "required": true
+    },
+    "channel_list": {
+      "name": "channel_list",
+      "description": "list of indices to use for nuclear segmentation IDS(0,2,3)",
+      "type": "channels",
+      "required": true
+    }
+  },
+  "script_path": "classicwastershed_cellseg",
+  "return": [
+    {
+      "labels": [],
+      "description": "per cell segmentation as numpy array"
+    }
+  ],
+  "depends_and_script": [],
+  "depends_or_script": [
+    "median_denoise",
+    "nlm_denoise",
+    "background_subtract"
+  ],
+  "libs": [
+    "scikit-image==0.18.1",
+    "scikit-learn==0.24.2",
+    "numpy==1.19"
+  ]
+}
