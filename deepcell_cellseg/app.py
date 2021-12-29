@@ -38,9 +38,9 @@ def run(**kwargs):
 
     channel_list = kwargs.get('channel_list')
     channel_list.sort()
-    median_image = kwargs.get('median_image')
+    image = kwargs.get('image')
     mpp = float(kwargs.get('mpp'))
 
-    deepcell_label = deepcell_segmentation(median_image, channel_list, mpp)
+    deepcell_label = deepcell_segmentation(image, channel_list, mpp)
 
     return {'labels': deepcell_label}

@@ -56,10 +56,10 @@ def feature_extraction(img, labels, channel_list):
 
 def run(**kwargs):
 
-    image = kwargs.get('median_image')
+    image = kwargs.get('image')
     labels = kwargs.get('labels')
-    channels_list = kwargs.get('channels_list')
+    channel_list = kwargs.get('channel_list')
 
-    df = feature_extraction(image, labels, channels_list)
+    df = feature_extraction(image, labels, channel_list)
 
     return {'dataframe': df}

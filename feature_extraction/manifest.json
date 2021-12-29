@@ -3,8 +3,8 @@
   "description": "Extract per cell expression for all channels",
   "stage": "5",
   "params": {
-    "median_image": {
-      "name": "median_image",
+    "image": {
+      "name": "image",
       "description": "Multichannel image as numpy array",
       "type": "array",
       "hidden": true,
@@ -17,8 +17,8 @@
       "hidden": true,
       "required": true
     },
-    "channels_list": {
-      "name": "channels_list",
+    "channel_list": {
+      "name": "channel_list",
       "description": "List of indices to use for nuclear segmentation",
       "type": "channels",
       "required": true

@@ -47,9 +47,9 @@ def nlm_denoise(image, patch, dist):
 
 def run(**kwargs):
 
-    image = kwargs.get('median_image')
+    image = kwargs.get('image')
     patch = kwargs.get('patch') or 5
     dist = kwargs.get('dist') or 6
-    median_image = nlm_denoise(image, patch, dist)
+    image = nlm_denoise(image, patch, dist)
 
-    return {'median_image': median_image}
+    return {'image': image}

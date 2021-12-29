@@ -1,6 +1,6 @@
 import numpy as np
 from skimage.exposure import rescale_intensity
-from skimage.filters import median, gaussian
+from skimage.filters import gaussian
 from skimage.filters import threshold_otsu
 from skimage.util import apply_parallel
 
@@ -46,11 +46,11 @@ def background_subtract(image, channel, threshold, subtraction):
 
 
 def run(**kwargs):
-    image = kwargs.get('median_image')
+    image = kwargs.get('image')
     channel = kwargs.get('channel')
     threshold = int(kwargs.get('threshold'))
     subtraction = int(kwargs.get('subtraction'))
 
-    median_image = background_subtract(image, channel, threshold, subtraction)
+    image = background_subtract(image, channel, threshold, subtraction)
 
-    return {'median_image': median_image}
+    return {'image': image}

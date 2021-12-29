@@ -59,8 +59,8 @@ def run(**kwargs):
 
     channel_list = kwargs.get("channel_list", [])
     channel_list.sort()
-    median_image = kwargs.get("median_image")
+    image = kwargs.get("image")
 
-    dilated_labels = classicwatershed_cellseg(median_image, channel_list)
+    dilated_labels = classicwatershed_cellseg(image, channel_list)
 
     return {"labels": dilated_labels}

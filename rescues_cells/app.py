@@ -95,7 +95,7 @@ def run(**kwargs):
 
     channel_list = kwargs.get('channel_list', [])
     channel_list.sort()
-    image = kwargs.get('median_image')
+    image = kwargs.get('image')
     labels = kwargs.get('labels')
 
     labels = rescue_cells(image, channel_list, labels)

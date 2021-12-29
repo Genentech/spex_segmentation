@@ -3,12 +3,12 @@
   "description": "Subtract background signal from other channels",
   "stage": "2",
   "params": {
-    "median_image": {
-      "name": "median_image",
+    "image": {
+      "name": "image",
       "description": "Multichannel numpy array (C,X,Y)",
       "type": "array",
       "hidden": true,
-      "default": []
+      "required": true
     },
     "ch": {
       "name": "channel",
@@ -35,7 +35,7 @@
   "script_path": "background_subtract",
   "return": [
     {
-      "median_image": [],
+      "image": [],
       "description": "Background corrected Image Stack"
     }
   ],

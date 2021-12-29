@@ -3,8 +3,8 @@
   "description": "Segment image by cellpose deeplearning method",
   "stage": "3",
   "params": {
-    "median_image": {
-      "name": "median_image",
+    "image": {
+      "name": "image",
       "description": "Multichannel image as numpy array",
       "type": "array",
       "hidden": true,

@@ -3,12 +3,12 @@
   "description": "Non local means denoising",
   "stage": "2",
   "params": {
-    "new_label": {
-      "name": "median_image",
+    "image": {
+      "name": "image",
       "description": "Multichannel numpy array (C,X,Y)",
       "type": "array",
       "hidden": true,
-      "default": []
+      "required": true
     },
     "patch": {
       "name": "patch",
@@ -28,7 +28,7 @@
   "script_path": "nlm_denoise",
   "return": [
     {
-      "median_image": [],
+      "image": [],
       "description": "Denoised image stack as numpy array (C,X,Y)"
     }
   ],

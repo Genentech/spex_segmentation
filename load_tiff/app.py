@@ -67,4 +67,4 @@ def run(**kwargs):
     image = kwargs.get('image_path')
     image, _ = load_tiff(image)
 
-    return {'median_image': image}
+    return {'image': image}

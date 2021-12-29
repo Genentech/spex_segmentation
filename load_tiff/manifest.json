@@ -21,7 +21,7 @@
   "script_path": "load_tiff",
   "return": [
     {
-      "median_image": [],
+      "image": [],
       "description": "Image opened by ASIImage"
     }
   ],

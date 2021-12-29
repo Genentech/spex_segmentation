@@ -3,8 +3,8 @@
   "description": "Detect nuclei in image using classic watershed",
   "stage": "3",
   "params": {
-    "median_image": {
-      "name": "median_image",
+    "image": {
+      "name": "image",
       "description": "Multichannel image as numpy array",
       "type": "array",
       "hidden": true,
@@ -21,7 +21,7 @@
   "return": [
     {
       "labels": [],
-      "description": "per cell segmentation as numpy array"
+      "description": "Per cell segmentation as numpy array"
     }
   ],
   "depends_and_script": [],

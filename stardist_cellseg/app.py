@@ -61,7 +61,7 @@ def stardist_cellseg(image, seg_channels, scaling, threshold, _min, _max):
 
 def run(**kwargs):
 
-    median_image = kwargs.get('median_image')
+    image = kwargs.get('image')
     channel_list = kwargs.get('channel_list')
     channel_list.sort()
 
@@ -71,7 +71,7 @@ def run(**kwargs):
     _max = float(kwargs.get('_max', 98.5))
 
     stardist_label = stardist_cellseg(
-        median_image,
+        image,
         channel_list,
         scaling,
         threshold,
