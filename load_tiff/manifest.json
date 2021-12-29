@@ -22,7 +22,7 @@
   "return": [
     {
       "median_image": [],
-      "description": "Image opened by ASIImage, and channel array"
+      "description": "Image opened by ASIImage"
     }
   ],
   "depends_and_script": [],

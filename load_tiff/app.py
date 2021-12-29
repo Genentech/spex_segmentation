@@ -9,8 +9,8 @@ def load_tiff(img, is_mibi=True):
 
     Parameters
     ----------
-    image : Path of Multichannel tiff file
-    is_mibi:Boolean. Does this image come from MIBI?
+    img : Path of Multichannel tiff file
+    is_mibi : Boolean. Does this image come from MIBI?
 
     Returns
     -------
@@ -20,42 +20,36 @@ def load_tiff(img, is_mibi=True):
     """
     file = img
     img = AICSImage(img)
-    channel_len = max(
-        img.size("STCZ")
-    )  # It is assumed that the dimension with largest length has the channels
-    order = ("S", "T", "C", "Z")
+
+    # It is assumed that the dimension with largest length has the channels
+    channel_len = max(img.size("STCZ"))
+    order = ["S", "T", "C", "Z"]
     dim = img.shape
 
     x = 0
-    for x in range(5):
+    for x in range(len(order)):
         if dim[x] == channel_len:
             break
-    x = x - 1
-    order[x]
-    string = str(order[x])
-    string += "YX"
 
-    if string == "SYX":
-        ImageDASK = img.get_image_dask_data(string, T=0, C=0, Z=0)
-    if string == "TYX":
-        ImageDASK = img.get_image_dask_data(string, S=0, C=0, Z=0)
-    if string == "CYX":
-        ImageDASK = img.get_image_dask_data(string, S=0, T=0, Z=0)
-    if string == "ZYX":
-        ImageDASK = img.get_image_dask_data(string, S=0, T=0, C=0)
+    orientation = f'{order[x]}YX'
 
-    ImageTrue = ImageDASK.compute()
+    args = {'T': 0, 'C': 0, 'Z': 0}
+    if orientation == "TYX":
+        args = {'S': 0, 'C': 0, 'Z': 0}
+    if orientation == "CYX":
+        args = {'S': 0, 'T': 0, 'Z': 0}
+    if orientation == "ZYX":
+        args = {'S': 0, 'T': 0, 'C': 0}
 
-    # temporaly
-    is_mibi = False
-    # temporaly
-    if is_mibi == True:
-        Channel_list = []
+    image_true = img.get_image_dask_data(orientation, **args).compute()
+
+    if is_mibi:
+        channel_list = []
         with TiffFile(file) as tif:
             for page in tif.pages:
                 # get tags as json
                 description = json.loads(page.tags["ImageDescription"].value)
-                Channel_list.append(description["channel.target"])
+                channel_list.append(description["channel.target"])
                 # only load supplied channels
                 # if channels is not None and description['channel.target'] not in channels:
                 # continue
@@ -63,18 +57,14 @@ def load_tiff(img, is_mibi=True):
                 # read channel data
                 # Channel_list.append((description['channel.mass'],description['channel.target']))
     else:
-        Channel_list = img.get_channel_names()
+        channel_list = img.get_channel_names()
 
-    return ImageTrue, Channel_list
+    return image_true, channel_list
 
 
 def run(**kwargs):
 
     image = kwargs.get('image_path')
-    image, channel = load_tiff(image, is_mibi=True)
+    image, _ = load_tiff(image)
 
-    return {
-        'median_image': image,
-        'channel': channel,
-        'image': image
-    }
+    return {'median_image': image}
