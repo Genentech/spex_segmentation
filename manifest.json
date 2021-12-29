@@ -1,0 +1,12 @@
+{
+  "name": "Segmentation",
+  "description": "",
+  "stages": [
+    "Loading",
+    "Preprocessing",
+    "Cell segmentation",
+    "Post processing",
+    "Feature extraction",
+    "Completing"
+  ]
+}
