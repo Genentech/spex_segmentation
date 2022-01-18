@@ -48,16 +48,22 @@ def load_tiff(img, is_mibi=True):
         with TiffFile(file) as tif:
             for page in tif.pages:
                 # get tags as json
-                description = json.loads(page.tags["ImageDescription"].value)
-                channel_list.append(description["channel.target"])
+                try:
+                    description = json.loads(page.tags["ImageDescription"].value)
+                    channel_list.append(description["channel.target"])
+                except json.decoder.JSONDecodeError:
+                    pass
                 # only load supplied channels
                 # if channels is not None and description['channel.target'] not in channels:
                 # continue
 
                 # read channel data
                 # Channel_list.append((description['channel.mass'],description['channel.target']))
+            if not channel_list:
+                channel_list = img.get_channel_names()
     else:
         channel_list = img.get_channel_names()
+
 
     return image_true, channel_list
 
