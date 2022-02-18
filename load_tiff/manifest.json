@@ -23,6 +23,10 @@
     {
       "image": [],
       "description": "Image opened by ASIImage"
+    },
+    {
+      "all_channels": [],
+      "description": "List of all channels of a image"
     }
   ],
   "depends_and_script": [],

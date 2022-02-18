@@ -17,11 +17,18 @@
       "hidden": true,
       "required": true
     },
+    "all_channels": {
+      "name": "all_channels",
+      "description": "List of all channels of a image",
+      "type": "array",
+      "hidden": true,
+      "required": true
+    },
     "channel_list": {
       "name": "channel_list",
-      "description": "List of indices to use for nuclear segmentation",
+      "description": "List of channels to use for nuclear segmentation (red, green, blue)",
       "type": "channels",
-      "required": true
+      "default": []
     }
   },
   "script_path": "feature_extraction",

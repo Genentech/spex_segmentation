@@ -10,12 +10,19 @@
       "hidden": true,
       "required": true
     },
+    "all_channels": {
+      "name": "all_channels",
+      "description": "List of all channels of a image",
+      "type": "array",
+      "hidden": true,
+      "required": true
+    },
     "ch": {
       "name": "channel",
-      "description": "Index of background channel",
+      "description": "background channel",
       "type": "channel",
       "required": true,
-      "default": 0
+      "default": ""
     },
     "top": {
       "name": "threshold",

@@ -68,6 +68,13 @@ def run(**kwargs):
 
     image = kwargs.get('image')
     channel_list = kwargs.get('channel_list', [])
+
+    all_channels = kwargs.get("all_channels", [])
+    channel_list: list[int] = [
+        all_channels.index(channel)
+        for channel in channel_list
+        if channel in all_channels
+    ]
     channel_list.sort()
 
     scaling = int(kwargs.get('scaling'))

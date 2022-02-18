@@ -64,13 +64,12 @@ def load_tiff(img, is_mibi=True):
     else:
         channel_list = img.get_channel_names()
 
-
     return image_true, channel_list
 
 
 def run(**kwargs):
 
     image = kwargs.get('image_path')
-    image, _ = load_tiff(image)
+    image, channel_list = load_tiff(image)
 
-    return {'image': image}
+    return {'image': image, 'all_channels': channel_list}

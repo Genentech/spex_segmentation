@@ -2,7 +2,7 @@ from skimage.measure import regionprops_table
 import pandas as pd
 
 
-def feature_extraction(img, labels, channel_list):
+def feature_extraction(img, labels, channel_list, all_channels):
 
     """Extract per cell expression for all channels
 
@@ -10,7 +10,8 @@ def feature_extraction(img, labels, channel_list):
     ----------
     img : Multichannel image as numpy array
     labels: 2d segmentation label numpy array
-    channel_list: list containing channel names
+    channel_list: list containing channel index
+    all_channels: list of all available channels
 
     Returns
     -------
@@ -21,28 +22,23 @@ def feature_extraction(img, labels, channel_list):
     # Image=img
     # img = AICSImage(Image)
 
-    # Get list of channels in ome.tiff
-    channels = channel_list
-    num_channels = len(channels)
-
-    # Read Image
-    # img = load_tiff(image_path)
-
     # G et coords from labels and create a dataframe to populate mean intensities
     props = regionprops_table(labels, properties=["label", "centroid"])
     per_cell_data_df = pd.DataFrame(props)
 
     # Loop through each tiff channel and append mean intensity to dataframe
-    for x in range(0, num_channels, 1):
+    for x in channel_list:
 
         try:
             image = img[x, :, :]
 
             props = regionprops_table(
-                labels, intensity_image=image, properties=["mean_intensity"]
+                labels,
+                intensity_image=image,
+                properties=["mean_intensity"]
             )
             data_temp = pd.DataFrame(props)
-            data_temp.columns = [channels[x]]
+            data_temp.columns = [all_channels[x]]
             per_cell_data_df = pd.concat([per_cell_data_df, data_temp], axis=1)
         except IndexError:
             print("oops")
@@ -58,8 +54,18 @@ def run(**kwargs):
 
     image = kwargs.get('image')
     labels = kwargs.get('labels')
-    channel_list = kwargs.get('channel_list')
+    channel_list = kwargs.get("channel_list", [])
+    all_channels = kwargs.get("all_channels", [])
 
-    df = feature_extraction(image, labels, channel_list)
+    if len(channel_list) > 0:
+        channel_list: list[int] = [
+            all_channels.index(channel)
+            for channel in channel_list
+            if channel in all_channels
+        ]
+    else:
+        channel_list = list(range(len(all_channels)))
+
+    df = feature_extraction(image, labels, channel_list, all_channels)
 
     return {'dataframe': df}

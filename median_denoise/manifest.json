@@ -10,6 +10,13 @@
       "hidden": true,
       "default": []
     },
+    "all_channels": {
+      "name": "all_channels",
+      "description": "List of all channels of a image",
+      "type": "array",
+      "hidden": true,
+      "required": true
+    },
     "kernel": {
       "name": "kernel",
       "description": "5-7 is a typical range",
@@ -19,10 +26,10 @@
     },
     "channel_list": {
       "name": "channel_list",
-      "description": "Indexes of channels to be denoised",
+      "description": "Channels to be denoised",
       "type": "channels",
       "required": true,
-      "default": [0]
+      "default": ""
     }
   },
   "script_path": "median_denoise",

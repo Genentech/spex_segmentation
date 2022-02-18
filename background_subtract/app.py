@@ -47,9 +47,16 @@ def background_subtract(image, channel, threshold, subtraction):
 
 def run(**kwargs):
     image = kwargs.get('image')
-    channel = kwargs.get('channel')
-    threshold = int(kwargs.get('threshold'))
+    channel = kwargs.get('channel', '')
+    threshold = kwargs.get('threshold')
     subtraction = int(kwargs.get('subtraction'))
+
+    all_channels = kwargs.get('all_channels')
+    if channel not in all_channels:
+        # raise ValueError(f'Background channel must be in image channels. Channel: {channel}')
+        return {'image': image}
+
+    channel = all_channels.index(channel)
 
     image = background_subtract(image, channel, threshold, subtraction)
 

@@ -10,9 +10,16 @@
       "hidden": true,
       "required": true
     },
+    "all_channels": {
+      "name": "all_channels",
+      "description": "List of all channels of a image",
+      "type": "array",
+      "hidden": true,
+      "required": true
+    },
     "channel_list": {
       "name": "channel_list",
-      "description": "list of indices to use for nuclear segmentation",
+      "description": "list of channels to use for nuclear segmentation",
       "type": "channels",
       "required": true
     },

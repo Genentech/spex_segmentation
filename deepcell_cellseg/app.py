@@ -18,6 +18,7 @@ def deepcell_segmentation(image, seg_channels, mpp):
 
     """
     temp2 = np.zeros((image.shape[1], image.shape[2]))
+    # here
     for i in seg_channels:
         temp = image[i]
         temp2 = temp + temp2
@@ -36,10 +37,17 @@ def deepcell_segmentation(image, seg_channels, mpp):
 
 def run(**kwargs):
 
-    channel_list = kwargs.get('channel_list')
-    channel_list.sort()
+    channel_list = kwargs.get('channel_list', [])
     image = kwargs.get('image')
     mpp = float(kwargs.get('mpp'))
+
+    all_channels = kwargs.get("all_channels", [])
+    channel_list: list[int] = [
+        all_channels.index(channel)
+        for channel in channel_list
+        if channel in all_channels
+    ]
+    channel_list.sort()
 
     deepcell_label = deepcell_segmentation(image, channel_list, mpp)
 

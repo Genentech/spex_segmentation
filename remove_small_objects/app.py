@@ -28,7 +28,7 @@ def remove_small_objects(segments, minsize):
 
 def run(**kwargs):
 
-    new_label = kwargs.get('new_label')
+    new_label = kwargs.get('labels')
     minsize = int(kwargs.get('minsize'))
 
     cellpose_label = remove_small_objects(new_label, minsize)
