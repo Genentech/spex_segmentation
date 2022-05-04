@@ -12,12 +12,13 @@
     }
   },
   "script_path": "find_boundaries",
-  "return": [
-    {
-      "contour": [],
+  "return":{
+    "contour": {
+      "name": "contour",
+      "type": "array",
       "description": "Array of bool, same shape as labels"
     }
-  ],
+  },
   "depends_and_script": [
     "simulate_cell"
   ]

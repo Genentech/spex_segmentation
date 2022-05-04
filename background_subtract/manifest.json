@@ -40,12 +40,13 @@
     }
   },
   "script_path": "background_subtract",
-  "return": [
-    {
-      "image": [],
-      "description": "Background corrected Image Stack"
+  "return": {
+    "image": {
+      "type": "array",
+      "description": "Background corrected Image Stack",
+      "name": "image"
     }
-  ],
+  },
   "depends_and_script": [
     "load_tiff"
   ],

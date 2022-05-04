@@ -25,17 +25,19 @@
     }
   },
   "script_path": "classicwastershed_cellseg",
-  "return": [
-    {
-      "labels": [],
+  "return": {
+    "labels": {
+      "name": "labels",
+      "type": "array",
       "description": "Per cell segmentation as numpy array"
     }
-  ],
+  },
   "depends_and_script": [],
   "depends_or_script": [
     "median_denoise",
     "nlm_denoise",
-    "background_subtract"
+    "background_subtract",
+    "load_tiff"
   ],
   "libs": [
     "scikit-image==0.18.1",

@@ -19,12 +19,13 @@
     }
   },
   "script_path": "simulate_cell",
-  "return": [
-    {
-      "new_label": [],
+  "return": {
+    "labels": {
+      "name": "labels",
+      "type": "array",
       "description": "2D label numpy array"
     }
-  ],
+  },
   "depends_or_script": [
     "deepcell_cellseg",
     "stardist_cellseg",

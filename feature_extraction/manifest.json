@@ -32,18 +32,24 @@
     }
   },
   "script_path": "feature_extraction",
-  "return": [
-    {
-      "dataframe": [],
+  "return": {
+    "dataframe": {
+      "name": "dataframe",
+      "type": "array",
       "description": "Pandas dataframe with cell by expression data"
     }
-  ],
+  },
   "depends_and_script": [],
   "depends_or_script": [
     "rescues_cells",
     "remove_small_objects",
     "remove_large_objects",
-    "simulate_cell"
+    "simulate_cell",
+
+    "deepcell_cellseg",
+    "stardist_cellseg",
+    "cellpose_cellseg",
+    "classicwastershed_cellseg"
   ],
   "libs": [
     "scikit-image==0.18.1",

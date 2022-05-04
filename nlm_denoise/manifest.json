@@ -26,12 +26,13 @@
     }
   },
   "script_path": "nlm_denoise",
-  "return": [
-    {
-      "image": [],
-      "description": "Denoised image stack as numpy array (C,X,Y)"
+  "return": {
+    "image": {
+      "type": "array",
+      "description": "Denoised image stack as numpy array",
+      "name": "image"
     }
-  ],
+  },
   "depends_and_script": [
     "load_tiff"
   ],
