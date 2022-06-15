@@ -3,13 +3,6 @@
   "description": "Remove median noise from img",
   "stage": "2",
   "params": {
-    "image": {
-      "name": "image",
-      "description": "Multichannel numpy array (C,X,Y)",
-      "type": "array",
-      "hidden": true,
-      "default": []
-    },
     "all_channels": {
       "name": "all_channels",
       "description": "List of all channels of a image",
