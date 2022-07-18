@@ -3,26 +3,6 @@
   "description": "Segment image by stardist deeplearning method",
   "stage": "3",
   "params": {
-    "image": {
-      "name": "image",
-      "description": "Multichannel numpy array (C,X,Y)",
-      "type": "array",
-      "hidden": true,
-      "required": true
-    },
-    "all_channels": {
-      "name": "all_channels",
-      "description": "List of all channels of a image",
-      "type": "array",
-      "hidden": true,
-      "required": true
-    },
-    "channel_list": {
-      "name": "channel_list",
-      "description": "list of channels to use for nuclear segmentation",
-      "type": "channels",
-      "required": true
-    },
     "scaling": {
       "name": "scaling",
       "description": "Integer value scaling",
@@ -75,6 +55,7 @@
     "keras==2.6",
     "opencv-python==4.5.1.48",
     "opencv-python-headless==4.5.2.54",
-    "csbdeep==0.6.3"
+    "csbdeep==0.6.3",
+    "protobuf==3.20.1"
   ]
 }
