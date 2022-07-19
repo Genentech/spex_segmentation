@@ -1,5 +1,6 @@
 import numpy as np
 from deepcell.applications import Mesmer
+import re
 
 
 def deepcell_segmentation(image, seg_channels, mpp):
@@ -37,7 +38,8 @@ def deepcell_segmentation(image, seg_channels, mpp):
 
 def run(**kwargs):
 
-    channel_list = kwargs.get('channel_list', [])
+    channel_list = kwargs.get("channel_list", [])
+    channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
     image = kwargs.get('image')
     mpp = float(kwargs.get('mpp'))
 

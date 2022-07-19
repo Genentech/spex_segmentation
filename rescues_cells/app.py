@@ -4,6 +4,7 @@ from skimage.filters import median
 from skimage.feature import peak_local_max
 from skimage.morphology import watershed, dilation, erosion, disk, binary_dilation
 import math
+import re
 
 
 def rescue_cells(image, seg_channels, label_ling):
@@ -93,7 +94,8 @@ def rescue_cells(image, seg_channels, label_ling):
 
 def run(**kwargs):
 
-    channel_list = kwargs.get('channel_list', [])
+    channel_list = kwargs.get("channel_list", [])
+    channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
     all_channels = kwargs.get("all_channels", [])
     channel_list: list[int] = [
         all_channels.index(channel)

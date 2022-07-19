@@ -1,5 +1,6 @@
 from skimage.measure import regionprops_table
 import pandas as pd
+import re
 
 
 def feature_extraction(img, labels, channel_list, all_channels):
@@ -55,6 +56,7 @@ def run(**kwargs):
     image = kwargs.get('image')
     labels = kwargs.get('labels')
     channel_list = kwargs.get("channel_list", [])
+    channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
     all_channels = kwargs.get("all_channels", [])
 
     if len(channel_list) > 0:

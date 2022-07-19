@@ -1,6 +1,7 @@
 from aicsimageio import AICSImage
 from tifffile import TiffFile
 import json
+import re
 
 
 def load_tiff(img, is_mibi=True):
@@ -43,28 +44,15 @@ def load_tiff(img, is_mibi=True):
 
     image_true = img.get_image_dask_data(orientation, **args).compute()
 
-    # if is_mibi:
-    #     channel_list = []
-    #     with TiffFile(file) as tif:
-    #         for page in tif.pages:
-    #             # get tags as json
-    #             try:
-    #                 description = json.loads(page.tags["ImageDescription"].value)
-    #                 channel_list.append(description["channel.target"])
-    #             except json.decoder.JSONDecodeError:
-    #                 pass
-    #             # only load supplied channels
-    #             # if channels is not None and description['channel.target'] not in channels:
-    #             # continue
-    #
-    #             # read channel data
-    #             # Channel_list.append((description['channel.mass'],description['channel.target']))
-    #         if not channel_list:
-    #             channel_list = img.get_channel_names()
-    # else:
-    #     channel_list = img.get_channel_names()
-
     channel_list = img.get_channel_names()
+    if channel_list == ['0']:
+        channel_list = []
+        with TiffFile(file) as tif:
+            for page in tif.pages:
+                description = json.loads(page.tags["ImageDescription"].value)
+                channel_list.append(description["channel.target"])
+
+        channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower() for item in channel_list]
 
     return image_true, channel_list
 

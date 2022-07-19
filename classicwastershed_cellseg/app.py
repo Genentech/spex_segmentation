@@ -4,6 +4,7 @@ from skimage.morphology import watershed, dilation, erosion, disk
 import skimage
 from skimage.measure import label
 import numpy as np
+import re
 
 
 def classicwatershed_cellseg(img, seg_channels):
@@ -58,10 +59,11 @@ def classicwatershed_cellseg(img, seg_channels):
 def run(**kwargs):
 
     image = kwargs.get("image")
+    all_channels = kwargs.get("all_channels", [])
 
     channel_list = kwargs.get("channel_list", [])
+    channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
 
-    all_channels = kwargs.get("all_channels", [])
     channel_list: list[int] = [
         all_channels.index(channel)
         for channel in channel_list

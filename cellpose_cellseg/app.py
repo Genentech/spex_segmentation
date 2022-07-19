@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from cellpose import models
+import re
 
 
 def cellpose_cellseg(img, seg_channels, diameter, scaling):
@@ -67,7 +68,9 @@ def cellpose_cellseg(img, seg_channels, diameter, scaling):
 def run(**kwargs):
 
     image = kwargs.get('image')
-    channel_list = kwargs.get('channel_list', [])
+
+    channel_list = kwargs.get("channel_list", [])
+    channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
 
     all_channels = kwargs.get("all_channels", [])
     channel_list: list[int] = [

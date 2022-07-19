@@ -2,6 +2,7 @@ import numpy as np
 from stardist.models import StarDist2D
 import cv2
 from csbdeep.utils import normalize
+import re
 
 
 def stardist_cellseg(image, seg_channels, scaling, threshold, _min, _max):
@@ -62,7 +63,8 @@ def stardist_cellseg(image, seg_channels, scaling, threshold, _min, _max):
 def run(**kwargs):
 
     image = kwargs.get('image')
-    channel_list = kwargs.get('channel_list', [])
+    channel_list = kwargs.get("channel_list", [])
+    channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
 
     all_channels = kwargs.get("all_channels", [])
     channel_list: list[int] = [

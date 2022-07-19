@@ -1,3 +1,4 @@
+import re
 import numpy as np
 from skimage.filters import median
 from skimage.morphology import disk
@@ -62,6 +63,7 @@ def run(**kwargs):
 
     image = kwargs.get("image")
     channel_list = kwargs.get("channel_list", [])
+    channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
 
     all_channels = kwargs.get("all_channels")
     channel_list: list[int] = [
