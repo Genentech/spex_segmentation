@@ -25,6 +25,7 @@ def stardist_cellseg(image, seg_channels, scaling, threshold, _min, _max):
     """
 
     temp2 = np.zeros((image.shape[1], image.shape[2]))
+    print(seg_channels)
     for i in seg_channels:
         try:
             temp = image[i]

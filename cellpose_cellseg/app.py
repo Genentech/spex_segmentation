@@ -82,6 +82,7 @@ def run(**kwargs):
 
     scaling = int(kwargs.get('scaling'))
     diameter = int(kwargs.get('diameter'))
+    print(channel_list, diameter, scaling)
 
     cellpose_label = cellpose_cellseg(image, channel_list, diameter, scaling)
 

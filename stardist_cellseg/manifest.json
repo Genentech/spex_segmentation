@@ -45,8 +45,7 @@
   "depends_or_script": [
     "median_denoise",
     "nlm_denoise",
-    "background_subtract",
-    "load_tiff"
+    "background_subtract"
   ],
   "libs": [
     "tensorflow==2.6.0",

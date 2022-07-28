@@ -18,7 +18,7 @@ def deepcell_segmentation(image, seg_channels, mpp):
     labels_final : per cell segmentation as numpy array
 
     """
-    temp2 = np.zeros((image.shape[1], image.shape[2]))
+    temp2 = np.zeros((image.shape[1], image.shape[2]), dtype='uint8')
     # here
     for i in seg_channels:
         temp = image[i]
