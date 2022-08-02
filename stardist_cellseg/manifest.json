@@ -3,13 +3,26 @@
   "description": "Segment image by stardist deeplearning method",
   "stage": "3",
   "params": {
-    "Channels":{
-      "name": "channels"
-      "description": "Select channels to use for single cell segmentation
-      "type": "list"
+    "image": {
+      "name": "image",
+      "description": "Multichannel image as numpy array",
+      "type": "array",
+      "hidden": true,
       "required": true
-      "default": 1
-    }
+    },
+    "all_channels": {
+      "name": "all_channels",
+      "description": "List of all channels of a image",
+      "type": "array",
+      "hidden": true,
+      "required": true
+    },
+    "channel_list": {
+      "name": "channel_list",
+      "description": "list of channels to use for nuclear segmentation",
+      "type": "channels",
+      "required": true
+    },
     "scaling": {
       "name": "scaling",
       "description": "Integer value scaling",
