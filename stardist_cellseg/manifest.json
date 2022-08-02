@@ -3,6 +3,13 @@
   "description": "Segment image by stardist deeplearning method",
   "stage": "3",
   "params": {
+    "Channels":{
+      "name": "channels"
+      "description": "Select channels to use for single cell segmentation
+      "type": "list"
+      "required": true
+      "default": 1
+    }
     "scaling": {
       "name": "scaling",
       "description": "Integer value scaling",
