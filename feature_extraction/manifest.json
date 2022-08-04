@@ -26,7 +26,7 @@
     },
     "channel_list": {
       "name": "channel_list",
-      "description": "List of channels to use for nuclear segmentation (red, green, blue)",
+      "description": "All if not selected, List of channels to use for nuclear segmentation (red, green, blue)",
       "type": "channels",
       "default": []
     }

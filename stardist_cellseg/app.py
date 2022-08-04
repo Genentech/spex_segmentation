@@ -80,6 +80,8 @@ def run(**kwargs):
     _min = float(kwargs.get('_min', 1))
     _max = float(kwargs.get('_max', 98.5))
 
+    print(channel_list)
+
     stardist_label = stardist_cellseg(
         image,
         channel_list,
