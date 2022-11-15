@@ -33,7 +33,7 @@
   },
   "depends_and_script": [],
   "libs": [
-    "aicsimageio==3.3.7",
+    "aicsimageio==4.9.2",
     "tifffile"
   ]
 }

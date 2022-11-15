@@ -76,6 +76,7 @@
     "opencv-python==4.5.1.48",
     "opencv-python-headless==4.5.2.54",
     "csbdeep==0.6.3",
-    "protobuf==3.20.1"
+    "protobuf==3.20.1",
+    "numexpr==2.8.4"
   ]
 }

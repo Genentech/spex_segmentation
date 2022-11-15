@@ -63,6 +63,7 @@ def run(**kwargs):
 
     channel_list = kwargs.get("channel_list", [])
     channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
+    all_channels = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in all_channels]
 
     channel_list: list[int] = [
         all_channels.index(channel)
