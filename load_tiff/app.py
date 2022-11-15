@@ -23,9 +23,11 @@ def load_tiff(img, is_mibi=True):
     img = AICSImage(img)
 
     # It is assumed that the dimension with largest length has the channels
-    channel_len = max(img.size("STCZ"))
+    # channel_len = max(img.size("STCZ")) old
+    dask_data = img.get_image_dask_data("STCZ")
+    dim = dask_data.shape
+    channel_len = max(dim)
     order = ["S", "T", "C", "Z"]
-    dim = img.shape
 
     x = 0
     for x in range(len(order)):
@@ -44,7 +46,7 @@ def load_tiff(img, is_mibi=True):
 
     image_true = img.get_image_dask_data(orientation, **args).compute()
 
-    channel_list = img.get_channel_names()
+    channel_list = img.channel_names
     if channel_list == ['0']:
         channel_list = []
         with TiffFile(file) as tif:

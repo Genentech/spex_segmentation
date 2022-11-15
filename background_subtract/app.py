@@ -52,6 +52,7 @@ def run(**kwargs):
     subtraction = int(kwargs.get('subtraction'))
 
     all_channels = kwargs.get('all_channels')
+
     if channel not in all_channels:
         # raise ValueError(f'Background channel must be in image channels. Channel: {channel}')
         return {'image': image}
