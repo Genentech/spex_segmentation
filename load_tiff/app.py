@@ -1,4 +1,6 @@
 from aicsimageio import AICSImage
+from aicsimageio.readers import BioformatsReader
+
 from tifffile import TiffFile
 import json
 import re
@@ -20,7 +22,7 @@ def load_tiff(img, is_mibi=True):
 
     """
     file = img
-    img = AICSImage(img)
+    img = AICSImage(img, reader=BioformatsReader)
 
     # It is assumed that the dimension with largest length has the channels
     # channel_len = max(img.size("STCZ")) old
@@ -38,7 +40,6 @@ def load_tiff(img, is_mibi=True):
             break
 
     orientation = f'{order[x]}YX'
-
     args = {'T': 0, 'C': 0, 'Z': 0}
     if orientation == "TYX":
         args = {'S': 0, 'C': 0, 'Z': 0}
