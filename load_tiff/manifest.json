@@ -34,6 +34,8 @@
   "depends_and_script": [],
   "libs": [
     "aicsimageio==4.9.2",
-    "tifffile"
+    "tifffile",
+    "bioformats_jar",
+    "jpype1"
   ]
 }
