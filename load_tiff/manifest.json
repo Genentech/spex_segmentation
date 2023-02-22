@@ -35,7 +35,7 @@
   "libs": [
     "aicsimageio==4.9.2",
     "tifffile",
-    "bioformats_jar",
+    "bioformats-jar",
     "jpype1"
   ]
 }
