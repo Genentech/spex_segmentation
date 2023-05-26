@@ -13,16 +13,16 @@ Example:
 
 ```json
 {
-"name": "Segmentation",
-"description": "",
-"order": 1,
-"stages": [
-"Loading",
-"Preprocessing",
-"Cell segmentation",
-"Post processing",
-"Feature extraction"
-]
+  "name": "Segmentation",
+  "description": "",
+  "order": 1,
+  "stages": [
+    "Loading",
+    "Preprocessing",
+    "Cell segmentation",
+    "Post processing",
+    "Feature extraction"
+  ]
 }
 ```
 
@@ -36,8 +36,8 @@ Example of run function:
 
 ```python
 def run(**kwargs):
-    # your code here
-    return {'result': result}
+  # your code here
+  return {'result': result}
 ```
 
 ## manifest.json File
