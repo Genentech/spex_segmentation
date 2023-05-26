@@ -13,31 +13,30 @@ Example:
 
 ```json
 {
-"name": "Segmentation",
-"description": "",
-"order": 1,
-"stages": [
-"Loading",
-"Preprocessing",
-"Cell segmentation",
-"Post processing",
-"Feature extraction"
-]
+  "name": "Segmentation",
+  "description": "",
+  "order": 1,
+  "stages": [
+    "Loading",
+    "Preprocessing",
+    "Cell segmentation",
+    "Post processing",
+    "Feature extraction"
+  ]
 }
 ```
 
-#Creating a Script
-##app.py File
+# Creating a Script
+## app.py File
+
 The app.py file contains Python code that performs the script's functions. This file should include a run function, which takes arguments and returns a dictionary of results.
-
 The input arguments should match the parameters defined in the manifest.json file.
-
 Example of run function:
 
 ```python
 def run(**kwargs):
-    # your code here
-    return {'result': result}
+  # your code here
+  return {'result': result}
 ```
 
 ## manifest.json File
