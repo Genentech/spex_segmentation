@@ -23,12 +23,6 @@
       "type": "array",
       "hidden": true,
       "required": true
-    },
-    "channel_list": {
-      "name": "channel_list",
-      "description": "All if not selected, List of channels to use for nuclear segmentation (red, green, blue)",
-      "type": "channels",
-      "default": []
     }
   },
   "script_path": "feature_extraction",
@@ -36,7 +30,12 @@
     "dataframe": {
       "name": "dataframe",
       "type": "array",
-      "description": "Pandas dataframe with cell by expression data"
+      "description": "dataframe delete later"
+    },
+    "adata": {
+      "name": "dataframe",
+      "type": "array",
+      "description": "adata"
     }
   },
   "depends_and_script": [],
@@ -45,7 +44,6 @@
     "remove_small_objects",
     "remove_large_objects",
     "simulate_cell",
-
     "deepcell_cellseg",
     "stardist_cellseg",
     "cellpose_cellseg",
@@ -55,7 +53,9 @@
     "wheel",
     "scikit-image==0.18.1",
     "scikit-learn==0.24.2",
-    "pandas==1.3.4"
+    "pandas==1.3.4",
+    "numpy==1.22.4",
+    "anndata==0.8.0",
+    "vitessce==3.0.5"
   ]
 }
-

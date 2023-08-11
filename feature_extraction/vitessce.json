@@ -1,4 +1,4 @@
-...,
+
 {
   "fileType": "anndata.zarr",
   "url": "https://example.com/my_adata.zarr",
@@ -28,5 +28,4 @@
       "path": "layers/X_uint8"
     }
   }
-},
-...
+}
