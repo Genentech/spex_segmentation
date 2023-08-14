@@ -102,7 +102,7 @@ def feature_extraction_adata(img, labels, channelnames):
 
         ordered_contours.append(sorted_contour)
 
-    adata = AnnData(perCellData, obsm={"spatial": coordinates})
+    adata = AnnData(perCellData[channelnames], obsm={"spatial": coordinates})
     adata.obsm['cell_polygon'] = np.array(ordered_contours, dtype=object)
 
     adata.obs['Cell_ID'] = perCellData[['cell_id']].values
