@@ -1,19 +1,43 @@
 from aicsimageio import AICSImage
-from aicsimageio.readers import BioformatsReader
-
-from tifffile import TiffFile
+from aicsimageio.writers import OmeTiffWriter, OmeZarrWriter
+from tifffile import imread, imsave, TiffWriter, imwrite, TiffFile
 import json
+
 import re
 
 
-def load_tiff(img, is_mibi=True):
+def convert_mibitiff2zarr(inputpath, outputpath):
+    """convert mibi tiff to zarr
 
+    Parameters
+    ----------
+    inputpath : Path of tiff file
+    outputpath : Path of ometiff or omezarr file. Note: for omezarr, the path must end in *.zarr/0
+
+    """
+    img = AICSImage(inputpath)
+    im_array = img.get_image_data("ZYX", T=0, C=0)
+
+    Channel_list = []
+    with TiffFile(inputpath) as tif:
+        for page in tif.pages:
+            # get tags as json
+            description = json.loads(page.tags['ImageDescription'].value)
+            Channel_list.append(description['channel.target'])
+
+    writer = OmeZarrWriter(output)
+    writer.write_image(im_array, image_name="Image:0", dimension_order="CYX", channel_names=Channel_list,
+                       scale_num_levels=4, physical_pixel_sizes=None, channel_colors=None)
+
+    print('conversion complete')
+
+
+def load_image(imgpath):
     """Load image and check/correct for dimension ordering
 
     Parameters
     ----------
-    img : Path of Multichannel tiff file
-    is_mibi : Boolean. Does this image come from MIBI?
+    img : Path of ometiff or omezarr file. Note: for omezarr, the path must end in *.zarr/0
 
     Returns
     -------
@@ -21,51 +45,30 @@ def load_tiff(img, is_mibi=True):
     Channels : list
 
     """
-    file = img
-    img = AICSImage(img, reader=BioformatsReader)
 
-    # It is assumed that the dimension with largest length has the channels
-    # channel_len = max(img.size("STCZ")) old
-    dask_data = img.get_image_dask_data("STCZ")
-    dim = dask_data.shape
-    channel_len = max(dim)
-    order = ["S", "T", "C", "Z"]
+    img = AICSImage(imgpath)
 
-    def replace(channels: list):
-        return [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channels]
+    dims = ['T', 'C', 'Z']
+    shape = list(img.shape)
+    channel_dim = dims[shape.index(max(shape[0:3]))]
 
-    x = 0
-    for x in range(len(order)):
-        if dim[x] == channel_len:
-            break
+    array = img.get_image_data(channel_dim + "YX")
 
-    orientation = f'{order[x]}YX'
-    args = {'T': 0, 'C': 0, 'Z': 0}
-    if orientation == "TYX":
-        args = {'S': 0, 'C': 0, 'Z': 0}
-    if orientation == "CYX":
-        args = {'S': 0, 'T': 0, 'Z': 0}
-    if orientation == "ZYX":
-        args = {'S': 0, 'T': 0, 'C': 0}
+    channel_list = img.channel_names
 
-    image_true = img.get_image_dask_data(orientation, **args).compute()
-
-    channel_list = replace(img.channel_names)
-    if channel_list == ['0'] or channel_list == ['channel00']:
+    if len(channel_list) != array.shape[0]:
         channel_list = []
-        with TiffFile(file) as tif:
+        with TiffFile(imgpath) as tif:
             for page in tif.pages:
-                description = json.loads(page.tags["ImageDescription"].value)
-                channel_list.append(description["channel.target"])
+                # get tags as json
+                description = json.loads(page.tags['ImageDescription'].value)
+                channel_list.append(description['channel.target'])
 
-        channel_list = replace(channel_list)
-
-    return image_true, channel_list
+    return array, channel_list
 
 
 def run(**kwargs):
-
     image = kwargs.get('image_path')
-    image, channel_list = load_tiff(image)
+    image, channel_list = load_image(image)
 
     return {'image': image, 'all_channels': channel_list}
