@@ -37,7 +37,8 @@
     "median_denoise",
     "nlm_denoise",
     "background_subtract",
-    "load_tiff"
+    "load_tiff",
+    "load_image"
   ],
   "libs": [
     "scikit-image==0.18.1",

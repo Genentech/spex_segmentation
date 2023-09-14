@@ -1,6 +1,6 @@
 {
-  "description": "load image",
-  "name": "load_tiff",
+  "description": "load tiff",
+  "name": "load tiff",
   "stage": "1",
   "params": {
     "omeroIds": {
@@ -31,7 +31,7 @@
       "name": "all_channels"
     }
   },
-  "depends_and_script": [],
+  "depends_and_script": ["nono"],
   "libs": [
     "aicsimageio[all]==4.12.1",
     "tifffile==2023.8.12",

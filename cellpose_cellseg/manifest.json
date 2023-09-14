@@ -51,7 +51,8 @@
     "median_denoise",
     "nlm_denoise",
     "background_subtract",
-    "load_tiff"
+    "load_tiff",
+    "load_image"
   ],
   "libs": [
     "opencv-python==4.5.1.48",

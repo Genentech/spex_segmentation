@@ -48,6 +48,7 @@
     }
   },
   "depends_and_script": [
+    "load_image",
     "load_tiff"
   ],
   "libs": [
