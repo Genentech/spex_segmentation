@@ -117,8 +117,6 @@ def feature_extraction_adata(img, labels, channelnames):
 def run(**kwargs):
     image = kwargs.get('image')
     labels = kwargs.get('labels')
-    all_channels = kwargs.get("all_channels", [])
-    adata = feature_extraction_adata(image, labels, all_channels)
 
     channel_list = kwargs.get("channel_list", [])
     channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
@@ -132,6 +130,8 @@ def run(**kwargs):
         ]
     else:
         channel_list = list(range(len(all_channels)))
+
+    adata = feature_extraction_adata(image, labels, channel_list)
 
     df = feature_extraction(image, labels, channel_list, all_channels)
 
