@@ -102,7 +102,7 @@ def feature_extraction_adata(img, labels, channelnames):
 
         ordered_contours.append(sorted_contour)
 
-    adata = AnnData(perCellData[channelnames], obsm={"spatial": coordinates})
+    adata = AnnData(perCellData[channelnames], obsm={"spatial": coordinates}, dtype="float32")
     adata.obsm['cell_polygon'] = np.array(ordered_contours, dtype=object)
 
     adata.obs['Cell_ID'] = perCellData[['cell_id']].values
@@ -118,9 +118,12 @@ def run(**kwargs):
     image = kwargs.get('image')
     labels = kwargs.get('labels')
 
-    channel_list = kwargs.get("channel_list", [])
-    channel_list = [re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in channel_list]
-    all_channels = kwargs.get("all_channels", [])
+    channel_list = [
+        re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in kwargs.get("channel_list", [])
+    ]
+    all_channels = [
+        re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in kwargs.get("all_channels", [])
+    ]
 
     if len(channel_list) > 0:
         channel_list: list[int] = [
