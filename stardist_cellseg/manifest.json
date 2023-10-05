@@ -79,6 +79,6 @@
     "csbdeep==0.6.3",
     "protobuf==3.20.1",
     "numexpr==2.8.4",
-    "numpy==1.21.2"
+    "numpy==1.22"
   ]
 }
