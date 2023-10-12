@@ -54,7 +54,7 @@ def feature_extraction(img, labels, channel_list, all_channels):
     return per_cell_data_df
 
 
-def feature_extraction_adata(img, labels, channelnames):
+def feature_extraction_adata(img, labels, channels, all_channels):
     """Extract per cell expression for all channels
 
     Parameters
@@ -74,8 +74,9 @@ def feature_extraction_adata(img, labels, channelnames):
     props = measure.regionprops_table(label_array, intensity_image=np.transpose(img, (1, 2, 0)),
                                       properties=['label', 'area', 'centroid', 'mean_intensity'])
     perCellData = pd.DataFrame(props)
+    channelnames = [all_channels[i] for i in channels]
 
-    perCellData.columns = ['cell_id', 'area_pixels', 'Y', 'X'] + channelnames  # rename columns
+    perCellData.columns = ['cell_id', 'area_pixels', 'Y', 'X'] + all_channels  # rename columns
 
     coordinates = np.array([k for k in perCellData[['X', 'Y']].values.tolist()])
 
@@ -102,7 +103,7 @@ def feature_extraction_adata(img, labels, channelnames):
 
         ordered_contours.append(sorted_contour)
 
-    adata = AnnData(perCellData[channelnames], obsm={"spatial": coordinates}, dtype="float32")
+    adata = AnnData(perCellData[all_channels], obsm={"spatial": coordinates}, dtype="float32")
     adata.obsm['cell_polygon'] = np.array(ordered_contours, dtype=object)
 
     adata.obs['Cell_ID'] = perCellData[['cell_id']].values
@@ -134,7 +135,7 @@ def run(**kwargs):
     else:
         channel_list = list(range(len(all_channels)))
 
-    adata = feature_extraction_adata(image, labels, channel_list)
+    adata = feature_extraction_adata(image, labels, channel_list, all_channels)
 
     df = feature_extraction(image, labels, channel_list, all_channels)
 
