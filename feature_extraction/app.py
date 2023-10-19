@@ -7,8 +7,33 @@ import numpy as np
 import re
 
 
+def parse_channel_list(channel_list, all_channels):
+
+    new_all_channels = []
+    for item in all_channels:
+        if isinstance(item, str):
+            item = re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "")
+        new_all_channels.append(item)
+
+    new_channel_list = []
+    for item in channel_list:
+        if isinstance(item, str):
+            item = re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "")
+        new_channel_list.append(item)
+
+    channel_list_int = [
+        new_all_channels.index(new_channel_list)
+        for channel in channel_list
+        if channel in all_channels
+    ]
+    if not channel_list_int:
+        channel_list_int = new_channel_list
+
+    return channel_list_int, all_channels
+
+
 def feature_extraction(img, labels, channel_list, all_channels):
-    """Extract per cell expression for all channels
+    """Extract per cell expression for all channels neeed delete later
 
     Parameters
     ----------
@@ -54,18 +79,15 @@ def feature_extraction(img, labels, channel_list, all_channels):
     return per_cell_data_df
 
 
-def feature_extraction_adata(img, labels, channels, all_channels):
+def feature_extraction_adata(img, labels, all_channels):
     """Extract per cell expression for all channels
-
-    Parameters
-    ----------
-    img : Multichannel image as numpy array
-    labels: 2d segmentation label numpy array
-    channelnames: list containing channel names (in same order as numpy array!!!)
 
     Returns
     -------
     perCellanndata: anndata single-cell object with all data
+    :param labels:
+    :param img: Multichannel image as numpy array
+    :param all_channels:
 
     """
 
@@ -74,7 +96,6 @@ def feature_extraction_adata(img, labels, channels, all_channels):
     props = measure.regionprops_table(label_array, intensity_image=np.transpose(img, (1, 2, 0)),
                                       properties=['label', 'area', 'centroid', 'mean_intensity'])
     perCellData = pd.DataFrame(props)
-    channelnames = [all_channels[i] for i in channels]
 
     perCellData.columns = ['cell_id', 'area_pixels', 'Y', 'X'] + all_channels  # rename columns
 
@@ -119,24 +140,19 @@ def run(**kwargs):
     image = kwargs.get('image')
     labels = kwargs.get('labels')
 
-    channel_list = [
-        re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in kwargs.get("channel_list", [])
-    ]
-    all_channels = [
-        re.sub("[^0-9a-zA-Z]", "", item).lower().replace("target", "") for item in kwargs.get("all_channels", [])
-    ]
-
-    if len(channel_list) > 0:
-        channel_list: list[int] = [
-            all_channels.index(channel)
-            for channel in channel_list
-            if channel in all_channels
-        ]
-    else:
+    channel_list, all_channels = parse_channel_list(kwargs.get("channel_list", []), kwargs.get("all_channels", []))
+    if not channel_list:
         channel_list = list(range(len(all_channels)))
 
-    adata = feature_extraction_adata(image, labels, channel_list, all_channels)
+    adata = feature_extraction_adata(image, labels, all_channels)
 
+    # deprecated
     df = feature_extraction(image, labels, channel_list, all_channels)
+    # deprecated
 
-    return {'adata': adata, 'dataframe': df}
+    return {
+        'adata': adata,
+        'dataframe': df,
+        'channel_list': channel_list,
+        'all_channels': all_channels
+    }

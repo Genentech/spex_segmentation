@@ -93,4 +93,8 @@ def run(**kwargs):
         _max
     )
 
-    return {'labels': stardist_label}
+    return {
+        'labels': stardist_label,
+        'channel_list': channel_list,
+        'all_channels': all_channels
+    }
