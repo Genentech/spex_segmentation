@@ -3,13 +3,6 @@
   "description": "Extract per cell expression for all channels",
   "stage": "5",
   "params": {
-    "image": {
-      "name": "image",
-      "description": "Multichannel image as numpy array",
-      "type": "array",
-      "hidden": true,
-      "required": true
-    },
     "labels": {
       "name": "labels",
       "description": "2d segmentation label numpy array",
