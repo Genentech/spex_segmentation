@@ -51,7 +51,7 @@
     "packaging",
     "deepcell==0.11.1",
     "scikit-image==0.18.1",
-    "numpy",
+    "numpy==1.22.4",
     "protobuf==3.19.0"
   ]
 }
