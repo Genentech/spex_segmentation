@@ -1,94 +1,122 @@
 # Documentation: File and Folder Structure
 
-Below is a description of the general file and folder structure in the project, along with how conda environments can be used, and how each element is typically utilized. **All executable scripts for stages should be named `app.py`** to maintain consistency.
+This document describes the general file and folder structure of the project, how Conda environments are utilized, and the standard practices for organizing executable scripts. **All executable scripts for stages must be named `app.py`** to maintain consistency.
 
 ## Project Structure
 
 - **Project root**
-    - `manifest.json` — The main project manifest (if used). It may contain common settings or link individual pipeline stages.
-    - Other files not related to a specific stage.
+    - `manifest.json` — The main project manifest (if used). It may contain global settings or link individual pipeline stages.
+    - Other files unrelated to a specific stage.
 
-- **Stage folders** (for example, `load_anndata`, `clustering`, `dimensionality_reduction`)
-    1. **`manifest.json`** (inside the stage folder)
+- **Stage folders** (e.g., `load_anndata`, `clustering`, `dimensionality_reduction`)
+    - **`manifest.json`** (inside the stage folder)
         - Describes the key parameters required by this stage.
-        - Contains the stage name, its description, execution order (`stage`), types and requirements of input parameters (`params`), and information about returned data (`return`).
-        - May specify dependencies (e.g., `depends_and_script` or `depends_or_script`) and the environments used (`conda`, `libs`, `conda_pip`).
-            - **Conda usage**: If `conda` is specified, the system creates or uses a conda environment with the requested Python version and installs the listed libraries (`libs` via conda, `conda_pip` via pip in that conda environment). This isolation helps avoid library conflicts.
+        - Contains the stage name, description, execution order (`stage`), input parameters (`params`), and expected output (`return`).
+        - Defines dependencies (`depends_and_script`, `depends_or_script`) and environment settings (`conda`, `libs`, `conda_pip`).
+        - **Conda Environments**: If `conda` is specified, the system creates or uses a Conda environment with the requested Python version and installs the necessary libraries (`libs` via Conda, `conda_pip` via pip).
+        - **Parameter Definitions**: The `params` section in `manifest.json` must include precise details for all possible parameter types to ensure smooth communication between the client and the script.
+        - **Result Transfer**: The result of each script is passed to the next stage through the structured output format defined in `return`.
 
-    2. **`app.py`** (the executable script for this stage)
-        - This file name should **always** be `app.py` to maintain a consistent structure.
-        - It contains the core business logic: reading data, transforming it, analyzing it, and producing output.
-        - Typically, it defines a function (often `run(**kwargs)`) that:
-            1. **Imports the necessary dependencies** (e.g., `scanpy`, `scvi`, `numpy`).
-            2. **Reads parameters** from `kwargs`, which are provided from `manifest.json` (e.g., file path, analysis method, metrics).
-            3. **Calls a helper function** or a series of functions that perform the main logic (e.g., data loading, clustering, dimensionality reduction, etc.).
-            4. **Returns the result** in the format described in the manifest (usually a dictionary where the keys match the fields in `return`).
+    - **`app.py`** (the executable script for this stage)
+        - This file must always be named `app.py` to maintain consistency.
+        - It contains the core logic: reading data, processing it, and returning results.
+        - Typically includes a `run(**kwargs)` function that:
+            1. **Imports necessary dependencies** (e.g., `scanpy`, `numpy`).
+            2. **Reads parameters** from `kwargs` (e.g., file paths, method choices, metrics).
+            3. **Executes core functions** (e.g., data loading, clustering, dimensionality reduction).
+            4. **Returns results** in the format defined in `manifest.json`.
 
-### Example `app.py` Structure
+## Parameter Types and Manifest Definitions
 
-1. **Import libraries**
-   ```python
-   import scanpy as sc
-   import numpy as np
-   import pandas as pd
-   # ...
-   ```
-2. **Define helper functions** (e.g., `reduce_dimensionality`, `cluster`, `load_data`)
-   ```python
-   def reduce_dimensionality(adata, method='pca', ...):
-       # Dimensionality reduction logic
-       return adata
-   ```
-3. **`run(**kwargs)` function**
-   ```python
-   def run(**kwargs):
-       # Read arguments
-       adata = kwargs.get('adata')
-       method = kwargs.get('method', 'pca')
-       # ...
-       # Call a helper function
-       out = reduce_dimensionality(adata, method=method)
-       # Return the result
-       return { 'adata': out }
-   ```
+Each stage's `manifest.json` should specify parameters under `params` using the following structure:
 
-## Main Purpose
-
-1. **`manifest.json`** in each folder:
-    - Defines which parameters the stage requires and what data it returns.
-    - Specifies the execution order in the pipeline.
-    - Allows you to determine which libraries (conda or pip) are needed for the stage.
-    - May include version constraints for packages.
-    - **Conda Environments**: If `conda` is specified, the system will create/use the indicated environment (for example, `python=3.11`) and install the specified libraries.
-
-2. **`app.py`**:
-    - Performs the main work — processes data using parameters obtained from `manifest.json`.
-    - Produces output that subsequent stages can access.
-    - Has a structure consisting of several steps:
-        - Imports
-        - Helper functions
-        - `run(**kwargs)` function — the entry point.
-
-## Example Project Structure
-
-```text
-project_root/
-├── manifest.json               # Main (root) manifest, if present
-├── load_anndata/
-│   ├── manifest.json           # Manifest for the loading stage
-│   └── app.py                  # Script performing data loading
-├── clustering/
-│   ├── manifest.json           # Manifest for the clustering stage
-│   └── app.py                  # Script for clustering data
-├── dimensionality_reduction/
-│   ├── manifest.json           # Manifest for the dimensionality reduction stage
-│   └── app.py                  # Script performing the analysis
-└── other_folders_or_files      # Other files/folders in the project
+```json
+"params": {
+"parameter_name": {
+"name": "Parameter Name",
+"label": "User-friendly label",
+"description": "Detailed description of the parameter",
+"type": "TYPE",
+"required": true,
+"default": "default_value",
+"enum": ["option1", "option2"],
+"min": 0,
+"max": 100
+}
+}
 ```
 
-## Usage Recommendations
-- Store a maximum of one stage in **each folder** (with its own `manifest.json` and `app.py`).
-- The **main manifest** can set the overall pipeline logic or serve as the entry point for the entire system.
-- Each `app.py` should be as focused as possible, making the stage easier to test, modify, and reuse.
-- Parameters in `manifest.json` should be described in as much detail as possible so that users understand what is required as input and what will be returned as output.
-- **Conda Environments**: When `conda` is specified, each stage can be isolated in its own environment to avoid library version conflicts across different scripts.
+### Supported Parameter Types
+
+#### Basic Types
+| Type       | Description & Manifest Example |
+|------------|--------------------------------|
+| `string`   | A text field. `{ "type": "string" }` |
+| `int`      | Integer input. `{ "type": "int", "min": 0, "max": 100 }` |
+| `float`    | Floating-point number. `{ "type": "float", "min": 0.0, "max": 1.0 }` |
+| `enum`     | A dropdown selection. `{ "type": "enum", "enum": ["option1", "option2"] }` |
+
+#### File and Data Types
+| Type       | Description & Manifest Example |
+|------------|--------------------------------|
+| `file`     | A file selector. `{ "type": "file" }` |
+| `dataGrid` | A structured table/grid input. `{ "type": "dataGrid" }` |
+
+#### Image and Channel Selection
+| Type       | Description & Manifest Example |
+|------------|--------------------------------|
+| `omero`    | Image selection from OMERO. `{ "type": "omero" }` |
+| `channel`  | A single channel selector. `{ "type": "channel" }` |
+| `channels` | Multi-channel selector. `{ "type": "channels" }` |
+
+#### Job and Process Selection
+| Type       | Description & Manifest Example |
+|------------|--------------------------------|
+| `job_id`   | A job selector. `{ "type": "job_id" }` |
+| `process_job_id` | A process job selector. `{ "type": "process_job_id" }` |
+
+These types are mapped to their respective React components in the UI, ensuring proper handling on the client-side.
+
+## Supported File Formats
+
+### **1. Image and Microscopy Data Formats (OMERO)**
+OMERO supports various image formats, excluding those with a time dimension (e.g., time-lapse TIFFs).
+
+| Format        | Description |
+|--------------|-------------|
+| **TIFF (.tif, .tiff)** | Multi-channel, multi-dimensional image storage widely used in microscopy. |
+| **OME-TIFF (.ome.tif, .ome.tiff)** | A standardized format supporting structured metadata and multiple channels (CXY or CYXZ). |
+
+**Unsupported Formats:**
+- **TIFF stacks with time dimension (TXYC or TXYZC)** → Not supported for direct OMERO ingestion in this workflow.
+
+### **2. AnnData File Format (H5AD)**
+H5AD is a format used for storing annotated multi-dimensional data, particularly in single-cell transcriptomics and spatial biology.
+
+#### **H5AD File Structure**
+- **Observations (Cells or Regions) (`adata.obs`)**
+    - `fov`, `volume`, `min_x`, `max_x`, `min_y`, `max_y` — Metadata defining spatial boundaries and properties.
+
+- **Variables (Genes or Features) (`adata.var`)**
+    - Contains `n_vars` variables (e.g., genes), with no additional annotations.
+
+- **Spatial Data (`adata.obsm`, `adata.uns`)**
+    - Stores spatial coordinates and additional metadata.
+
+#### **Manifest Definition for H5AD Files**
+```json
+{
+  "params": {
+    "adata": {
+      "name": "AnnData File",
+      "label": "Spatial transcriptomics dataset",
+      "description": "H5AD file containing spatial gene expression data",
+      "type": "file",
+      "required": true
+    }
+  }
+}
+```
+
+This ensures structured integration of microscopy data while avoiding conflicts with unsupported formats in OMERO.
+
