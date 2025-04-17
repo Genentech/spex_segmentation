@@ -1,6 +1,7 @@
 from skimage.filters import median
 from skimage.feature import peak_local_max
-from skimage.morphology import watershed, dilation, erosion, disk
+from skimage.segmentation import watershed
+from skimage.morphology import dilation, erosion, disk
 import skimage
 from skimage.measure import label
 import numpy as np
@@ -30,7 +31,9 @@ def classicwatershed_cellseg(img, seg_channels):
     seg_image = temp2 / len(seg_channels)
     med = median(seg_image, disk(3))
 
-    local_max = peak_local_max(med, min_distance=2, indices=False)
+    coords = peak_local_max(med, min_distance=2, footprint=np.ones((3, 3)))
+    local_max = np.zeros_like(med, dtype=bool)
+    local_max[tuple(coords.T)] = True
 
     otsu = skimage.filters.threshold_otsu(med)
     otsu_mask = med > otsu
